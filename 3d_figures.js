@@ -86,40 +86,40 @@ function createPyramid(gl, translation, rotationAxis)
 
        // Back face
        // El de 5 lados
-        0.0,  1.0, -5.0, // 0 | punto irreggular =()
-       -1.0,  0.0, -5.0, // 1
-        1.0,  0.0, -5.0, // 2
-       -0.5, -1.0, -5.0, // 3
-        0.5, -1.0, -5.0, // 4
+        0.0,  1.0, -8.0, // 0 | punto irreggular =()
+       -1.0,  0.0, -8.0, // 1
+        1.0,  0.0, -8.0, // 2
+       -0.5, -1.0, -8.0, // 3
+        0.5, -1.0, -8.0, // 4
 
        // Vienen 5 caras que son triangulares
        // 1 face
-        0.0,  1.0, -5.0, // 5  | 0
-      - 1.0,  0.0, -5.0, // 6  | 1
-        0.0,  0.0, -2.0, // 7  | punto medio
+        0.0,  1.0, -8.0, // 5  | 0
+      - 1.0,  0.0, -8.0, // 6  | 1
+        0.0,  0.0, -5.0, // 7  | punto medio
 
 
         // 2 face
-      - 1.0,  0.0, -5.0, // 8  | 1
-      - 0.5, -1.0, -5.0, // 9  | 3
-        0.0,  0.0, -2.0, // 10 | Punto medio
+      - 1.0,  0.0, -8.0, // 8  | 1
+      - 0.5, -1.0, -8.0, // 9  | 3
+        0.0,  0.0, -5.0, // 10 | Punto medio
 
 
         // 3 face
-      - 0.5, -1.0, -5.0, // 11  | 3
-        0.5, -1.0, -5.0, // 12  | 4
-        0.0,  0.0, -2.0, // 13  | Punto medio
+      - 0.5, -1.0, -8.0, // 11  | 3
+        0.5, -1.0, -8.0, // 12  | 4
+        0.0,  0.0, -5.0, // 13  | Punto medio
 
 
         // 4 face
-        0.5, -1.0, -5.0, // 14  | 4
-        1.0,  0.0, -5.0, // 15  | 2
-        0.0,  0.0, -2.0, // 16  | Punto medio
+        0.5, -1.0, -8.0, // 14  | 4
+        1.0,  0.0, -8.0, // 15  | 2
+        0.0,  0.0, -5.0, // 16  | Punto medio
 
         // 5 face
-        1.0,  0.0, -5.0, // 17  | 2
-        0.0,  1.0, -5.0, // 18  | 0
-        0.0,  0.0, -2.0  // 19  | Punto medio
+        1.0,  0.0, -8.0, // 17  | 2
+        0.0,  1.0, -8.0, // 18  | 0
+        0.0,  0.0, -5.0  // 19  | Punto medio
 
 
        ];
@@ -150,10 +150,13 @@ function createPyramid(gl, translation, rotationAxis)
     //     for (var j=0; j < 4; j++)
     //         vertexColors = vertexColors.concat(color);
     // }
-    for (const color of faceColors)
+    for (var j=0; j < 5; j++)
+        vertexColors = vertexColors.concat(faceColors[0]);
+
+    for (var i = 1; i < faceColors.length ; i++)
     {
-        for (var j=0; j < 4; j++)
-            vertexColors = vertexColors.concat(color);
+        for (var j=0; j < 3; j++)
+            vertexColors = vertexColors.concat(faceColors[i]);
     }
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
