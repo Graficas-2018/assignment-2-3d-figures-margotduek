@@ -17,13 +17,14 @@
 			    var gl = initWebGL(canvas);
 		        initViewport(gl, canvas);
 		        initGL(canvas);
-						var pyramid = createPyramid(gl,[0, 0, -20], [0.5,1,0]); //si mueves esto cambia la rotación, como va girando el cubo
+						var pyramid = createPyramid(gl,[1, 1, -20], [0.5,1,1]); // (gl, translation, rotationAxis )si mueves esto cambia la rotación, como va girando el cubo
+						var octaedron = createOctaedron(gl,[5, 1, -20], [0.5,1,1]); // (gl, translation, rotationAxis )si mueves esto cambia la rotación, como va girando el cubo
 
             // var scutoid = createScutoid(gl, [0, 0, -1], [1, 1, -1]); //si mueves esto cambia la rotación, como va girando el cubo
 				initShader(gl);
 				// TO DO: create and draw the figures
 				// run(gl, [scutoid]);
-				run(gl, [pyramid]);
+				run(gl, [pyramid, octaedron]);
 
       }
 	);

@@ -71,6 +71,137 @@ function initGL(canvas)
 }
 
 // TO DO: Create the functions for each of the figures.
+// Create the vertex, color and index data for a multi-colored octaedron
+function createOctaedron(gl, translation, rotationAxis)
+{
+    // Vertex Data
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+    var verts = [
+
+       // Vienen 4 caras que son triangulares
+       // 1 face
+        0.0,  0.0, -7.0, // 0  | E
+      - 1.0,  0.0, -8.0, // 1  | A
+        0.0,  1.0, -8.0, // 2  | B
+
+      - 1.0,  0.0, -8.0, // 3  | A
+        0.0,  1.0, -8.0, // 4  | B
+        0.0,  0.0, -9.0, // 5  | F
+
+        // 2 face
+        0.0,  0.0, -9.0, // 6  | F
+        0.0,  1.0, -8.0, // 7  | B
+        1.0,  0.0, -8.0, // 8  | C
+
+        0.0,  1.0, -8.0, // 9   | B
+        1.0,  0.0, -8.0, // 10  | C
+        0.0,  0.0, -7.0, // 11  | E
+
+        // 3 face
+        0.0,  0.0, -7.0, // 12   | E
+        1.0,  0.0, -8.0, // 13   | C
+        0.0, -1.0, -8.0, // 14   | D
+
+        1.0,  0.0, -8.0, // 15   | C
+        0.0, -1.0, -8.0, // 16   | D
+        0.0,  0.0, -9.0, // 17   | F
+
+
+        // 4 face
+        0.0,  0.0, -9.0, // 18  | F
+        0.0, -1.0, -8.0, // 19  | D
+      - 1.0,  0.0, -8.0, // 20  | A
+
+        0.0, -1.0, -8.0, // 21  | D
+      - 1.0,  0.0, -8.0, // 22  | A
+        0.0,  0.0, -7.0  // 23   | E
+
+       ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    // Color data
+    var colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    // colores RGBA
+    var faceColors = [
+        [1.0, 0.0, 0.0, 1.0], // Front face
+        [0.0, 0.0, 1.0, 1.0], // 1 face
+        [1.0, 1.0, 0.0, 1.0], // 2 face
+        [1.0, 0.0, 1.0, 1.0], // 3 face
+        [0.0, 1.0, 1.0, 1.0], // 4 face
+        [0.0, 0.0, 1.0, 0.8], // 5 face
+        [0.0, 1.0, 1.0, 1.0], // 4 face
+        [0.0, 0.0, 1.0, 0.8]  // 5 face
+    ];
+
+    // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the octaedron's face.
+    // hay que ponerle un color a cada vertice, en este caso de 4 en 4 porque una cara del cubo tiene 4 vertices
+    var vertexColors = [];
+    // for (var i in faceColors)
+    // {
+    //     var color = faceColors[i];
+    //     for (var j=0; j < 4; j++)
+    //         vertexColors = vertexColors.concat(color);
+    // }
+    for (const color of faceColors)
+    {
+        for (var j=0; j < 3; j++)
+            vertexColors = vertexColors.concat(color);
+    }
+
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
+
+    // Index data (defines the triangles to be drawn).
+    var octaedronIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, octaedronIndexBuffer);
+    // estos numeritos son las ileras del arreglo verts y con eso crean las caras
+    var octaedronIndices = [
+        0, 1, 2,
+        3, 4, 5,                    // 1 face
+        6, 7, 8,
+        9, 10, 11,                    // 2 face
+        12, 13, 14,
+        15, 16, 17,                  // 3 face
+        18, 19, 20,
+        21, 22, 23                  // 4 face
+    ];
+
+    // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
+    // Uint16Array: Array of 16-bit unsigned integers.
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(octaedronIndices), gl.STATIC_DRAW);
+
+    var octaedron = {
+            buffer:vertexBuffer, colorBuffer:colorBuffer, indices:octaedronIndexBuffer,
+            vertSize:3, nVerts:24, colorSize:4, nColors: 32, nIndices:24, // nindices es la cantidad de indices en el arreglo octaedronindices
+            primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
+
+    mat4.translate(octaedron.modelViewMatrix, octaedron.modelViewMatrix, translation);
+
+    octaedron.update = function()
+    {
+        var now = Date.now();
+        var deltat = now - this.currentTime;
+        this.currentTime = now;
+        var fract = deltat / duration;
+        var angle = Math.PI * 2 * fract;
+
+        // Rotates a mat4 by the given angle
+        // mat4 out the receiving matrix
+        // mat4 a the matrix to rotate
+        // Number rad the angle to rotate the matrix by
+        // vec3 axis the axis to rotate around
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
+    };
+
+    return octaedron;
+}
+
+
 
 
 // Create the vertex, color and index data for a multi-colored pyramid
