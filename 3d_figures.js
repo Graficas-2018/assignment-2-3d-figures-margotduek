@@ -73,6 +73,135 @@ function initGL(canvas)
 // TO DO: Create the functions for each of the figures.
 
 
+// Create the vertex, color and index data for a multi-colored pyramid
+function createPyramid(gl, translation, rotationAxis)
+{
+    // Vertex Data
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+    var verts = [
+
+
+       // Back face
+       // El de 5 lados
+        0.0,  1.0, -5.0, // 0 | punto irreggular =()
+       -1.0,  0.0, -5.0, // 1
+        1.0,  0.0, -5.0, // 2
+       -0.5, -1.0, -5.0, // 3
+        0.5, -1.0, -5.0, // 4
+
+       // Vienen 5 caras que son triangulares
+       // 1 face
+        0.0,  1.0, -5.0, // 5  | 0
+      - 1.0,  0.0, -5.0, // 6  | 1
+        0.0,  0.0, -2.0, // 7  | punto medio
+
+
+        // 2 face
+      - 1.0,  0.0, -5.0, // 8  | 1
+      - 0.5, -1.0, -5.0, // 9  | 3
+        0.0,  0.0, -2.0, // 10 | Punto medio
+
+
+        // 3 face
+      - 0.5, -1.0, -5.0, // 11  | 3
+        0.5, -1.0, -5.0, // 12  | 4
+        0.0,  0.0, -2.0, // 13  | Punto medio
+
+
+        // 4 face
+        0.5, -1.0, -5.0, // 14  | 4
+        1.0,  0.0, -5.0, // 15  | 2
+        0.0,  0.0, -2.0, // 16  | Punto medio
+
+        // 5 face
+        1.0,  0.0, -5.0, // 17  | 2
+        0.0,  1.0, -5.0, // 18  | 0
+        0.0,  0.0, -2.0  // 19  | Punto medio
+
+
+       ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    // Color data
+    var colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    // colores RGBA
+    var faceColors = [
+        [1.0, 0.0, 0.0, 1.0], // Front face
+        [0.0, 0.0, 1.0, 1.0], // 1 face
+        [1.0, 1.0, 0.0, 1.0], // 2 face
+        [1.0, 0.0, 1.0, 1.0], // 3 face
+        [0.0, 1.0, 1.0, 1.0], // 4 face
+        [0.0, 0.0, 1.0, 0.8], // 5 face
+
+
+    ];
+
+    // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the pyramid's face.
+    // hay que ponerle un color a cada vertice, en este caso de 4 en 4 porque una cara del cubo tiene 4 vertices
+    var vertexColors = [];
+    // for (var i in faceColors)
+    // {
+    //     var color = faceColors[i];
+    //     for (var j=0; j < 4; j++)
+    //         vertexColors = vertexColors.concat(color);
+    // }
+    for (const color of faceColors)
+    {
+        for (var j=0; j < 4; j++)
+            vertexColors = vertexColors.concat(color);
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
+
+    // Index data (defines the triangles to be drawn).
+    var pyramidIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, pyramidIndexBuffer);
+    // estos numeritos son las ileras del arreglo verts y con eso crean las caras
+    var pyramidIndices = [
+        0, 1, 2,      1, 2, 3,    2, 3, 4,                      // Back face
+        5, 6, 7,                                                // 1 face
+        8, 9, 10,                                               // 3 face
+        11, 12, 13,                                             // 2 face
+        14, 15, 16,                                             // 4 face
+        17, 18, 19,                                             // 5 face
+    ];
+
+    // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
+    // Uint16Array: Array of 16-bit unsigned integers.
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(pyramidIndices), gl.STATIC_DRAW);
+
+    var pyramid = {
+            buffer:vertexBuffer, colorBuffer:colorBuffer, indices:pyramidIndexBuffer,
+            vertSize:3, nVerts:20, colorSize:4, nColors: 24, nIndices:24, // nindices es la cantidad de indices en el arreglo pyramidindices
+            primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
+
+    mat4.translate(pyramid.modelViewMatrix, pyramid.modelViewMatrix, translation);
+
+    pyramid.update = function()
+    {
+        var now = Date.now();
+        var deltat = now - this.currentTime;
+        this.currentTime = now;
+        var fract = deltat / duration;
+        var angle = Math.PI * 2 * fract;
+
+        // Rotates a mat4 by the given angle
+        // mat4 out the receiving matrix
+        // mat4 a the matrix to rotate
+        // Number rad the angle to rotate the matrix by
+        // vec3 axis the axis to rotate around
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
+    };
+
+    return pyramid;
+}
+
+
 
 // Create the vertex, color and index data for a multi-colored scutoid
 function createScutoid(gl, translation, rotationAxis)
@@ -158,8 +287,12 @@ function createScutoid(gl, translation, rotationAxis)
         [1.0, 1.0, 0.0, 1.0], // 2 face
         [1.0, 0.0, 1.0, 1.0], // 3 face
         [0.0, 1.0, 1.0, 1.0],  // 4 face
-        [0.0, 0.0, 1.0, 1.0], // 5 face
-        [1.0, 1.0, 0.0, 1.0] // Triangulo
+        [0.0, 0.0, 1.0, 0.8], // 5 face
+        [1.0, 1.0, 0.0, 0.8] // Triangulo
+        [1.0, 0.0, 0.0, 1.0], // Front face
+        [0.0, 1.0, 0.0, 1.0], // Back face
+        [0.0, 0.0, 1.0, 1.0], // 1 face
+
     ];
 
     // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the scutoid's face.
@@ -184,14 +317,14 @@ function createScutoid(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, scutoidIndexBuffer);
     // estos numeritos son las ileras del arreglo verts y con eso crean las caras
     var scutoidIndices = [
-        6, 7, 8,      7, 8, 9,    8, 9, 10,       9, 10, 11,    // Front face
-        1, 2, 3,      2, 3, 4,    3, 4, 5,                      // Back face
-        12, 13, 14,     13, 14, 15,     // 1 face
-        16, 17, 18,     17, 18, 19, // 2 face
-        20, 21, 22,     21, 22, 23,  // 3 face
-        24, 25, 26,     24, 26, 27,     24, 27, 28,        // 4 face
-        29, 30, 31,     29, 31, 32,     29, 32, 33,          // 5 face
-        34, 35, 36
+        5, 6, 7,      6, 7, 8,    7, 8, 9,       8, 9, 10,    // Front face
+        0, 1, 2,      1, 2, 3,    2, 3, 4,                      // Back face
+        11, 12, 13,     11, 13, 14,     // 1 face
+        19, 20, 21,     20, 21, 22,  // 3 face
+        15, 16, 17,     16, 17, 18, // 2 face
+        23, 24, 25,     23, 25, 26,     23, 26, 27,        // 4 face
+        28, 29, 30,     28, 30, 31,     28, 31, 32,          // 5 face
+        33, 34, 35
     ];
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
@@ -200,7 +333,7 @@ function createScutoid(gl, translation, rotationAxis)
 
     var scutoid = {
             buffer:vertexBuffer, colorBuffer:colorBuffer, indices:scutoidIndexBuffer,
-            vertSize:3, nVerts:36, colorSize:4, nColors: 32, nIndices:60, // nindices es la cantidad de indices en el arreglo scutoidindices
+            vertSize:3, nVerts:36, colorSize:4, nColors: 36, nIndices:60, // nindices es la cantidad de indices en el arreglo scutoidindices
             primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
 
     mat4.translate(scutoid.modelViewMatrix, scutoid.modelViewMatrix, translation);
