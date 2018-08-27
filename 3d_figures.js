@@ -350,61 +350,61 @@ function createScutoid(gl, translation, rotationAxis)
 
        // Back face
        // El de 5 lados
-        0.0,  1.0, -2.0, // 1 | punto irreggular =()
-       -1.0,  0.0, -2.0, // 2
-        1.0,  0.0, -2.0, // 3
-       -0.5, -1.0, -2.0, // 4
-        0.5, -1.0, -2.0, // 5
+        0.0,  1.0, -8.0, // 1 | punto irreggular =()
+       -1.0,  0.0, -8.0, // 2
+        1.0,  0.0, -8.0, // 3
+       -0.5, -1.0, -8.0, // 4
+        0.5, -1.0, -8.0, // 5
 
         // Front face
         // el de 6 lados
-       -1.0,  0.0,  1.0, // 6
-       -0.5,  1.0,  1.0, // 7 conectan con el 1
-       -0.5, -1.0,  1.0, // 8
-        0.5,  1.0,  1.0, // 9 conectan con el 1
-        0.5, -1.0,  1.0, // 10
-        1.0,  0.0,  1.0, // 11
+       -1.0,  0.0, -5.0, // 6
+       -0.5,  1.0, -5.0, // 7 conectan con el 1
+       -0.5, -1.0, -5.0, // 8
+        0.5,  1.0, -5.0, // 9 conectan con el 1
+        0.5, -1.0, -5.0, // 10
+        1.0,  0.0, -5.0, // 11
 
        // Vienen 3 caras que son rectangulos normales que juntan las 2 figulas
        // 1 face
-        0.5, -1.0,  1.0, // 10  | 12
-        1.0,  0.0,  1.0, // 11  | 13
-        1.0,  0.0, -2.0, // 3   | 14
-        0.5, -1.0, -2.0, // 5   | 15
+        0.5, -1.0, -5.0, // 10  | 12
+        1.0,  0.0, -5.0, // 11  | 13
+        1.0,  0.0, -8.0, // 3   | 14
+        0.5, -1.0, -8.0, // 5   | 15
 
         // 2 face
-        -1.0,  0.0,  1.0, // 6  | 16
-        -0.5, -1.0,  1.0, // 8  | 17
-        -1.0,  0.0, -2.0, // 2  | 18
-        -0.5, -1.0, -2.0, // 4  | 19
+        -1.0,  0.0, -5.0, // 6  | 16
+        -0.5, -1.0, -5.0, // 8  | 17
+        -1.0,  0.0, -8.0, // 2  | 18
+        -0.5, -1.0, -8.0, // 4  | 19
 
         // 3 face
-        -0.5, -1.0,  1.0, // 8  | 20
-         0.5, -1.0,  1.0, // 10 | 21
-        -0.5, -1.0, -2.0, // 4  | 22
-         0.5, -1.0, -2.0, // 5  | 23
+        -0.5, -1.0, -5.0, // 8  | 20
+         0.5, -1.0, -5.0, // 10 | 21
+        -0.5, -1.0, -8.0, // 4  | 22
+         0.5, -1.0, -8.0, // 5  | 23
 
        // Vienen 2 caras que tocan una cara del de 5 y una cara del de 6, dejando así espacio parama
        // el triangulito que va de la 6ta cara al los trinagulitos
        // 4 face
-       -0.5,  1.0,  1.0, // 7   | 24
-       -1.0,  0.0, -2.0, // 2   | 25
-        0.0,  1.0, -2.0, // 1   | 26
-        0.0,  1.0,  0.0, // El punto en el que se une con el nuevo triangulo  | 27
-        0.5,  1.0,  1.0, // 9   | 28
+       -0.5,  1.0, -5.0, // 7   | 24
+       -1.0,  0.0, -8.0, // 2   | 25
+        0.0,  1.0, -8.0, // 1   | 26
+        0.0,  1.0, -6.0, // El punto en el que se une con el nuevo triangulo  | 27
+        0.5,  1.0, -5.0, // 9   | 28
 
 
        // 5 face
-        0.5, -1.0,  1.0, // 10  | 29
-        1.0,  0.0, -2.0, // 3   | 30
-        0.0,  1.0, -2.0, // 1   | 31
-        0.0,  1.0,  0.0, // El punto en el que se une con el nuevo triangulo  | 32
-        1.0,  0.0,  1.0, // 11  | 33
+        0.5, -1.0, -5.0, // 10  | 29
+        1.0,  0.0, -8.0, // 3   | 30
+        0.0,  1.0, -8.0, // 1   | 31
+        0.0,  1.0, -6.0, // El punto en el que se une con el nuevo triangulo  | 32
+        1.0,  0.0, -5.0, // 11  | 33
 
         // el triangulito de enmedio
-        0.5,  1.0,  1.0, // 9   | 34
-        0.0,  1.0,  0.0, // El punto en el que se une con el nuevo triangulo  | 35
-        1.0,  0.0,  1.0 // 11   | 36
+        0.5,  1.0, -5.0, // 9   | 34
+        0.0,  1.0, -6.0, // El punto en el que se une con el nuevo triangulo  | 35
+        1.0,  0.0, -5.0 // 11   | 36
 
        ];
 
@@ -415,34 +415,100 @@ function createScutoid(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     // colores RGBA
     var faceColors = [
-        [1.0, 0.0, 0.0, 1.0], // Front face
+
         [0.0, 1.0, 0.0, 1.0], // Back face
+        // [0.0, 1.0, 0.0, 1.0], // Back face
+        // [0.0, 1.0, 0.0, 1.0], // Back face
+        // [0.0, 1.0, 0.0, 1.0], // Back face
+
+        [1.0, 0.0, 0.0, 1.0], // Front face
+        // [1.0, 0.0, 0.0, 1.0], // Front face
+        // [1.0, 0.0, 0.0, 1.0], // Front face
+
         [0.0, 0.0, 1.0, 1.0], // 1 face
+        // [0.0, 0.0, 1.0, 1.0], // 1 face
+
         [1.0, 1.0, 0.0, 1.0], // 2 face
+        // [1.0, 1.0, 0.0, 1.0], // 2 face
+
         [1.0, 0.0, 1.0, 1.0], // 3 face
+        // [1.0, 0.0, 1.0, 1.0], // 3 face
+
         [0.0, 1.0, 1.0, 1.0],  // 4 face
+        // [0.0, 1.0, 1.0, 1.0],  // 4 face
+        // [0.0, 1.0, 1.0, 1.0],  // 4 face
+
         [0.0, 0.0, 1.0, 0.8], // 5 face
+        // [0.0, 0.0, 1.0, 0.8], // 5 face
+        // [0.0, 0.0, 1.0, 0.8], // 5 face
+
         [1.0, 1.0, 0.0, 0.8] // Triangulo
-        [1.0, 0.0, 0.0, 1.0], // Front face
-        [0.0, 1.0, 0.0, 1.0], // Back face
-        [0.0, 0.0, 1.0, 1.0], // 1 face
 
     ];
 
     // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the scutoid's face.
     // hay que ponerle un color a cada vertice, en este caso de 4 en 4 porque una cara del cubo tiene 4 vertices
     var vertexColors = [];
+    // for (var j=0; j < 5; j++)
+    //     vertexColors = vertexColors.concat(faceColors[0]);
+    //
+    // for (var j=0; j < 6; j++)
+    //     vertexColors = vertexColors.concat(faceColors[1]);
+    //
+    // for (var j=0; j < 4; j++){
+    //     vertexColors = vertexColors.concat(faceColors[2]);
+    //
+    // for (var j=0; j < 4; j++){
+    //     vertexColors = vertexColors.concat(faceColors[3]);
+    //
+    // for (var j=0; j < 4; j++){
+    //     vertexColors = vertexColors.concat(faceColors[4]);
+    //
+    // for (var j=0; j < 5; j++){
+    //     vertexColors = vertexColors.concat(faceColors[5]);
+    //
+    // for (var j=0; j < 5; j++){
+    //     vertexColors = vertexColors.concat(faceColors[6]);
+    //
+    // for (var j=0; j < 3; j++)
+    //     vertexColors = vertexColors.concat(faceColors[7]);
+
+
+    var cara = 0;
+    for (var i = 0; i < faceColors.length ; i++){
+        var color = faceColors[i];
+        if(cara == 0){
+          for (var j=0; j < 5; j++)
+          vertexColors = vertexColors.concat(color);
+        }
+        else if(cara == 1){
+          for (var j=0; j < 6; j++)
+          vertexColors = vertexColors.concat(color);
+        }
+        else if(cara > 1 && cara < 5){
+          for (var j=0; j < 4; j++)
+          vertexColors = vertexColors.concat(color);
+        }
+        else if(cara > 4 && cara < 7){
+          for (var j=0; j < 5; j++)
+          vertexColors = vertexColors.concat(color);
+        }else if(cara == 7){
+          for (var j=0; j < 3; j++)
+          vertexColors = vertexColors.concat(color);
+        }
+        cara += 1;
+    }
     // for (var i in faceColors)
     // {
     //     var color = faceColors[i];
+    //     for (var j=0; j < 3; j++)
+    //         vertexColors = vertexColors.concat(color);
+    // }
+    // for (const color of faceColors)
+    // {
     //     for (var j=0; j < 4; j++)
     //         vertexColors = vertexColors.concat(color);
     // }
-    for (const color of faceColors)
-    {
-        for (var j=0; j < 4; j++)
-            vertexColors = vertexColors.concat(color);
-    }
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
 
